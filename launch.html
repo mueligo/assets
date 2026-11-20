@@ -105,6 +105,13 @@
       setTimeout(() => {
         window.location.href = targetUri;
       }, 100);
+    } else {
+      document.title = "Game Launcher Bridge";
+      document.getElementById('title').textContent = "Game Launcher Bridge";
+      document.getElementById('desc').textContent = "No launcher URI specified.";
+      document.getElementById('launch-btn').style.display = "none";
+      const spinner = document.querySelector('.spinner');
+      if (spinner) spinner.style.display = "none";
     }
   </script>
 </body>
