@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Opening Game Launcher...</title>
+  <title>Opening Launcher...</title>
   <style>
     body {
       background: #0f1117;
@@ -23,7 +23,7 @@
       border: 1px solid #2a2e3d;
       border-radius: 16px;
       padding: 32px 24px;
-      max-width: 420px;
+      max-width: 440px;
       width: 100%;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
     }
@@ -65,22 +65,46 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+    .subtext {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #6c7280;
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="spinner"></div>
-    <h2>Opening Game Launcher...</h2>
-    <p>We are opening the official launcher application on your device.</p>
+    <h2 id="title">Opening Launcher...</h2>
+    <p id="desc">Directing to official desktop application on your device.</p>
     <a id="launch-btn" class="btn" href="#">Open Manually</a>
+    <div class="subtext">You may close this tab after the app launches.</div>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const targetUri = params.get('uri') || params.get('url');
     if (targetUri) {
-      document.getElementById('launch-btn').href = targetUri;
-      window.location.href = targetUri;
+      let appName = "Game Launcher";
+      if (targetUri.startsWith("steam:")) appName = "Steam";
+      else if (targetUri.startsWith("com.epicgames")) appName = "Epic Games Launcher";
+      else if (targetUri.startsWith("goggalaxy:")) appName = "GOG Galaxy";
+      else if (targetUri.startsWith("itchio:")) appName = "itch.io";
+      else if (targetUri.startsWith("uplay:")) appName = "Ubisoft Connect";
+      else if (targetUri.startsWith("origin2:")) appName = "EA App";
+      else if (targetUri.startsWith("battlenet:")) appName = "Battle.net";
+      else if (targetUri.startsWith("ms-windows-store:")) appName = "Microsoft Store";
+
+      document.title = `Opening ${appName}...`;
+      document.getElementById('title').textContent = `Opening ${appName}...`;
+      document.getElementById('desc').textContent = `Redirecting directly to the ${appName} desktop client.`;
+      const btn = document.getElementById('launch-btn');
+      btn.textContent = `Open ${appName} Manually`;
+      btn.href = targetUri;
+
+      setTimeout(() => {
+        window.location.href = targetUri;
+      }, 100);
     }
   </script>
 </body>
